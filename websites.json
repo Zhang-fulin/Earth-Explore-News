@@ -1,0 +1,127 @@
+[
+    {
+      "name": "BBC",
+      "url": "https://www.bbc.com/news",
+      "enable": false
+    },
+    {
+      "name": "China Daily",
+      "url": "https://www.chinadaily.com.cn/",
+      "enable": true
+    },
+    {
+      "name": "Reuters",
+      "url": "https://www.reuters.com/",
+      "enable": false
+    },
+    {
+      "name": "CNN",
+      "url": "https://www.cnn.com/",
+      "enable": false
+    },
+    {
+      "name": "The New York Times",
+      "url": "https://www.nytimes.com/",
+      "enable": false
+    },
+    {
+      "name": "The Guardian",
+      "url": "https://www.theguardian.com/international",
+      "enable": false
+    },
+    {
+      "name": "Le Monde",
+      "url": "https://www.lemonde.fr/",
+      "enable": false
+    },
+    {
+      "name": "El País",
+      "url": "https://elpais.com/",
+      "enable": false
+    },
+    {
+      "name": "Al Jazeera",
+      "url": "https://www.aljazeera.com/",
+      "enable": false
+    },
+    {
+      "name": "The Times of India",
+      "url": "https://timesofindia.indiatimes.com/",
+      "enable": false
+    },
+    {
+      "name": "The Sydney Morning Herald",
+      "url": "https://www.smh.com.au/",
+      "enable": false
+    },
+    {
+      "name": "South China Morning Post",
+      "url": "https://www.scmp.com/",
+      "enable": false
+    },
+    {
+      "name": "France 24",
+      "url": "https://www.france24.com/en/",
+      "enable": false
+    },
+    {
+      "name": "Der Spiegel",
+      "url": "https://www.spiegel.de/international/",
+      "enable": false
+    },
+    {
+      "name": "The Australian",
+      "url": "https://www.theaustralian.com.au/",
+      "enable": false
+    },
+    {
+      "name": "The Africa Report",
+      "url": "https://www.theafricareport.com/",
+      "enable": false
+    },
+    {
+      "name": "The Japan Times",
+      "url": "https://www.japantimes.co.jp/",
+      "enable": false
+    },
+    {
+      "name": "Telesur",
+      "url": "https://www.telesurenglish.net/",
+      "enable": false
+    },
+    {
+      "name": "Clarin",
+      "url": "https://www.clarin.com/",
+      "enable": false
+    },
+    {
+      "name": "O Globo",
+      "url": "https://oglobo.globo.com/",
+      "enable": false
+    },
+    {
+      "name": "Folha de S. Paulo",
+      "url": "https://www.folha.uol.com.br/",
+      "enable": false
+    },
+    {
+      "name": "Times of Malta",
+      "url": "https://timesofmalta.com/",
+      "enable": false
+    },
+    {
+      "name": "Middle East Eye",
+      "url": "https://www.middleeasteye.net/",
+      "enable": false
+    },
+    {
+      "name": "The Hindu",
+      "url": "https://www.thehindu.com/",
+      "enable": false
+    },
+    {
+      "name": "Asahi Shimbun",
+      "url": "https://www.asahi.com/english/",
+      "enable": false
+    }
+]
