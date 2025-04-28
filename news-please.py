@@ -9,14 +9,12 @@ import os
 
 deepseek_api_key = os.getenv('deepseek_api_key', 'default_value')
 
-client = OpenAI(api_key='sk-c1f536554b904360a2ca415d194156e9', base_url="https://api.deepseek.com")
+client = OpenAI(api_key=deepseek_api_key, base_url="https://api.deepseek.com")
 
 def main():
-    # 读取 JSON 文件
     with open('websites.json', 'r', encoding='utf-8') as f:
         websites = json.load(f)
 
-    # 测试
     for website in websites:
         if website["enable"]:
             name = website['name']

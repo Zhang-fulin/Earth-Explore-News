@@ -8,35 +8,24 @@ def scrape_bbc(url):
     return links
 
 def scrape_cctv(url):
-    # 获取当前日期，格式化为 'YYYY/MM/DD'
     today_date = datetime.now().strftime('%Y/%m/%d')
 
-    # 使用 Playwright 进行自动化操作
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)  # 使用无头浏览器
+        browser = p.chromium.launch(headless=True)
+
         page = browser.new_page()
 
-        # 访问页面
         page.goto('https://news.cctv.com/world/', timeout=60000)
         
-        # 等待页面的链接加载完成
         page.wait_for_selector('a[target="_blank"]', timeout=60000)
 
-        # 提取所有目标为 _blank 的链接
         links = page.query_selector_all('a[target="_blank"]')
+
         hrefs = [link.get_attribute('href') for link in links]
 
-        # # 筛选出包含当天日期的新闻链接
-        # filtered_links = [href for href in hrefs if today_date in href]
+        filtered_links = [href for href in hrefs if today_date in href]
 
-        # 筛选出包含当天日期的新闻链接
-        filtered_links = [href for href in hrefs if '2025/04/28' in href]
-
-        # 去重：使用 set 来删除重复的链接
         unique_links = list(set(filtered_links))
-
-        # 提取第一个元素为新的列表
-        # first_link_list = [unique_links[0]] if unique_links else []
 
         return unique_links
     
@@ -255,6 +244,6 @@ def fetch_htmls(urls):
                 html_list.append(html)
             except Exception as e:
                 print(f"Error fetching {url}: {e}")
-                html_list.append(None)  # 出错的留空，保证顺序
+                html_list.append(None)
         browser.close()
     return html_list
