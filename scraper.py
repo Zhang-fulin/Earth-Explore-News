@@ -1,5 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
+from playwright.sync_api import sync_playwright
+from datetime import datetime
 
 # BBC 爬虫函数
 def scrape_bbc(url):
@@ -7,9 +9,43 @@ def scrape_bbc(url):
     # 添加BBC的爬取逻辑
     return links
 
+def scrape_cctv(url):
+    # 获取当前日期，格式化为 'YYYY/MM/DD'
+    today_date = datetime.now().strftime('%Y/%m/%d')
+
+    # 使用 Playwright 进行自动化操作
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)  # 使用无头浏览器
+        page = browser.new_page()
+
+        # 访问页面
+        page.goto('https://news.cctv.com/world/', timeout=60000)
+        
+        # 等待页面的链接加载完成
+        page.wait_for_selector('a[target="_blank"]', timeout=60000)
+
+        # 提取所有目标为 _blank 的链接
+        links = page.query_selector_all('a[target="_blank"]')
+        hrefs = [link.get_attribute('href') for link in links]
+
+        # # 筛选出包含当天日期的新闻链接
+        # filtered_links = [href for href in hrefs if today_date in href]
+
+        # 筛选出包含当天日期的新闻链接
+        filtered_links = [href for href in hrefs if '2025/04/28' in href]
+
+        # 去重：使用 set 来删除重复的链接
+        unique_links = list(set(filtered_links))
+
+        # 提取第一个元素为新的列表
+        # first_link_list = [unique_links[0]] if unique_links else []
+
+        return unique_links
+    
 # China Daily 爬虫函数
 def scrape_chinadaily(url):
     links = set()
+    print(url)
     # 添加China Daily的爬取逻辑
     return links
 
@@ -155,6 +191,8 @@ def scrape_asahi(url):
 def get_news_links(website_name, url):
     if website_name == "BBC":
         return scrape_bbc(url)
+    elif website_name == "CCTV":
+        return scrape_cctv(url)
     elif website_name == "China Daily":
         return scrape_chinadaily(url)
     elif website_name == "Reuters":
@@ -205,3 +243,20 @@ def get_news_links(website_name, url):
         return scrape_asahi(url)
     else:
         return None
+    
+
+def fetch_htmls(urls):
+    html_list = []
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        for url in urls:
+            try:
+                page.goto(url, timeout=60000)
+                html = page.content()
+                html_list.append(html)
+            except Exception as e:
+                print(f"Error fetching {url}: {e}")
+                html_list.append(None)  # 出错的留空，保证顺序
+        browser.close()
+    return html_list
