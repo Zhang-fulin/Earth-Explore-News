@@ -9,7 +9,7 @@ import os
 
 deepseek_api_key = os.getenv('deepseek_api_key', 'default_value')
 
-client = OpenAI(api_key=deepseek_api_key, base_url="https://api.deepseek.com")
+client = OpenAI(api_key='sk-c1f536554b904360a2ca415d194156e9', base_url="https://api.deepseek.com")
 
 def main():
     # 读取 JSON 文件
@@ -31,7 +31,7 @@ def main():
             if news_htmls:
                 for html in list(news_htmls):
                     article = NewsPlease.from_html(html)
-                    if article.description:
+                    if article.description and article.title:
                         news_titles += article.title + '|'
 
             else:
