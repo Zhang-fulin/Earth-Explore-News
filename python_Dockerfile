@@ -1,0 +1,11 @@
+FROM python:3.12
+
+RUN pip install playwright && \
+    playwright install && \
+    pip install jieba && \
+    pip install news-please && \
+    pip install openai
+
+WORKDIR /app
+
+RUN git clone https://github.com/Zhang-fulin/Earth-Explore-News.git
