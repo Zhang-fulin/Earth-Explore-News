@@ -40,7 +40,7 @@ def main():
                 model="deepseek-chat",
                 messages=[
                     {"role": "system", "content": "You are a helpful assistant who can search the web for information."},
-                    {"role": "user", "content": f"'{news_titles}' 汇总并总结出5个最重要的新闻 并按照{{content:xxx, lon:xxx, lat:xxx}}格式输出, lon lat 是你推断的经纬度"},
+                    {"role": "user", "content": f"'{news_titles}' 汇总并总结出5个最重要的新闻 并按照{{content:xxx, lon:xxx, lat:xxx}}格式输出, lon lat 是你推断的经纬度, 如果推断一样的经纬度，请加不超过5的偏移"},
                 ],
                 stream=False
             )

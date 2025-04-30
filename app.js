@@ -1,36 +1,89 @@
-// 引入 Supabase 客户端库
+const fs = require('fs/promises');
+const path = require('path');
+const websites = require('./websites.json');
+
 const { createClient } = require('@supabase/supabase-js');
 
-// 设置 Supabase 项目的 URL 和 API 密钥（你可以在 Supabase 控制台中找到这些）
-const supabaseUrl = process.env.supabaseUrl;  // 替换为你的 Supabase URL
-const supabaseKey = process.env.supabaseKey;  // 替换为你的 API 密钥（服务角色密钥或匿名密钥）
+const supabaseUrl = process.env.supabaseUrl; 
+const supabaseKey = process.env.supabaseKey; 
 
-
-console.log(supabaseUrl,supabaseKey);
-// 创建 Supabase 客户端
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+function getTodayDateString() {
+  const today = new Date();
+  return today.toISOString().split('T')[0];  // 获取 "YYYY-MM-DD"
+}
+
+// 查找与网站名对应的最新文件
+async function findLatestFile(sourceName) {
+  const todayDate = getTodayDateString();
+  const files = await fs.readdir('.');  // 获取当前目录的文件列表
+  const matchedFiles = files.filter(f =>
+    f.startsWith(`${sourceName}_${todayDate}`) && f.endsWith('.json')  // 查找今天的文件
+  );
+
+  if (matchedFiles.length === 0) {
+    console.log(`⚠️ 没有找到 ${sourceName} 今日的文件`);
+    return null;
+  }
+
+  // 按日期时间排序，最新的文件排前
+  const sorted = matchedFiles
+    .map(file => {
+      const match = file.match(/^.+_(\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2})\.json$/);
+      if (!match) return null;
+      const timestamp = match[1].replace(/_/g, ' ').replace(/-/g, ':').replace(' ', 'T');
+      return { file, date: new Date(timestamp.replace(/:/g, (c, i) => i === 13 || i === 16 ? ':' : '-')) };
+    })
+    .filter(Boolean)
+    .sort((a, b) => b.date - a.date);  // 最新的排前面
+
+  return sorted[0]?.file || null;  // 返回最新的文件名
+}
+
+// 从文件名提取时间（例如：CCTV_2025-04-30_20-07-53.json 中提取出时间部分）
+function extractTimeFromFilename(filename) {
+  const match = filename.match(/_(\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2})\.json/);
+  return match ? match[1].replace(/_/g, ' ').replace(/-/g, ':') : null;  // 转换成 'YYYY-MM-DD HH:mm:ss' 格式
+}
+
 async function insertData() {
-    // 数据插入对象
-    const newsData = {
-      title: 'New Feature Released!',
-      content: 'We just released a new feature in our app.',
-      lat: 36,
-      lon: 119,
-      city: '潍坊'
-    };
-  
-    // 插入数据到 'news' 表
-    const { data, error } = await supabase
-      .from('news')  // 指定表名
-      .insert([newsData]);  // 插入数据
-  
-    if (error) {
-      console.error('Error inserting data:', error);
-    } else {
-      console.log('Inserted data:', data);
+
+  for (const site of websites) {
+    if (site.enable) {
+      const latestFile = await findLatestFile(site.name);
+
+      if (latestFile) {
+        // 读取文件内容
+        const raw = await fs.readFile(latestFile, 'utf-8');
+        const json = JSON.parse(raw);
+    
+        // 从文件名中提取时间信息（或使用当前时间）
+        const time = extractTimeFromFilename(latestFile) || new Date().toISOString();
+        
+        for (const item of json) {
+          // 构造数据
+          const newsData = {
+            title: site.name,
+            content: item.content,
+            lat: item.lat,
+            lon: item.lon,
+            city: item.city || '未知',
+            time: time 
+          };
+           // 插入数据到 Supabase
+          const { data, error } = await supabase.from('news').insert([newsData]);
+      
+          if (error) {
+            console.error(`❌ 插入失败: ${site.name}`, error);
+          } else {
+            console.log(`✅ 插入成功: ${site.name}`, data);
+          }
+        }
+      }
     }
   }
+}
   
-  // 调用插入数据的函数
-  insertData();
+//   // 调用插入数据的函数
+insertData();
