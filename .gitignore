@@ -1,3 +1,6 @@
 node_modules/
 
 *.json
+!websites.json
+
+__pycache__/

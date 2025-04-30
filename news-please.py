@@ -6,6 +6,7 @@ from openai import OpenAI
 import re
 import datetime
 import os
+import time
 
 deepseek_api_key = os.getenv('deepseek_api_key', 'default_value')
 
@@ -29,7 +30,7 @@ def main():
             if news_htmls:
                 for html in list(news_htmls):
                     article = NewsPlease.from_html(html)
-                    if article.description and article.title:
+                    if article.title:
                         news_titles += article.title + '|'
 
             else:
@@ -39,7 +40,7 @@ def main():
                 model="deepseek-chat",
                 messages=[
                     {"role": "system", "content": "You are a helpful assistant who can search the web for information."},
-                    {"role": "user", "content": f"'{news_titles}' 从中选出你觉得最重要的10个新闻 并按照{{title:xxx, lon:xxx, lat:xxx}}格式输出, lon lat 是你推断的经纬度"},
+                    {"role": "user", "content": f"'{news_titles}' 汇总并总结出5个最重要的新闻 并按照{{content:xxx, lon:xxx, lat:xxx}}格式输出, lon lat 是你推断的经纬度"},
                 ],
                 stream=False
             )
@@ -57,7 +58,7 @@ def main():
 
                     current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
                     
-                    file_name = f"{current_time}.json"
+                    file_name = f"{name + '_' + current_time}.json"
                     
                     with open(file_name, 'w', encoding='utf-8') as f:
                         json.dump(data, f, ensure_ascii=False, indent=4)
@@ -69,4 +70,6 @@ def main():
                 print("未找到有效的 JSON 内容")
 
 if __name__ == "__main__":
-    main()
+    while True:
+        main()
+        time.sleep(2 * 60 * 60)
