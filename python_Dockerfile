@@ -1,13 +1,25 @@
 FROM python:3.12
 
-RUN apt-get update && apt-get install -y git
+RUN apt-get update && apt-get install -y git curl
 
-RUN pip install playwright && \
-    playwright install && \
-    pip install jieba && \
-    pip install news-please && \
-    pip install openai
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+    && apt-get install -y nodejs
+
+RUN pip install --upgrade pip \
+    && pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple \
+    playwright jieba news-please openai
+
+RUN playwright install chromium
+
+RUN playwright install-deps
 
 WORKDIR /app
 
 RUN git clone https://github.com/Zhang-fulin/Earth-Explore-News.git
+
+WORKDIR /app/Earth-Explore-News
+
+RUN npm install
+
+# Command to run the application
+CMD ["python", "news-please.py"]

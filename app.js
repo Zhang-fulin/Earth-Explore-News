@@ -11,12 +11,26 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 function getTodayDateString() {
   const today = new Date();
-  return today.toISOString().split('T')[0];  // 获取 "YYYY-MM-DD"
+
+  // 获取北京时间（UTC + 8 小时）
+  const offset = 8 * 60;  // 北京时间与UTC的时差是8小时
+  
+  // 获取 UTC 时间并加上北京时间的偏移
+  const utc = today.getTime() + today.getTimezoneOffset() * 60000;  
+  const beijingTime = new Date(utc + offset * 60000);
+
+  // 获取 "YYYY-MM-DD" 格式的日期
+  const year = beijingTime.getFullYear();
+  const month = String(beijingTime.getMonth() + 1).padStart(2, '0');
+  const day = String(beijingTime.getDate()).padStart(2, '0');
+  
+  return `${year}-${month}-${day}`;
 }
 
 // 查找与网站名对应的最新文件
 async function findLatestFile(sourceName) {
   const todayDate = getTodayDateString();
+  console.log(todayDate)
   const files = await fs.readdir('.');  // 获取当前目录的文件列表
   const matchedFiles = files.filter(f =>
     f.startsWith(`${sourceName}_${todayDate}`) && f.endsWith('.json')  // 查找今天的文件
