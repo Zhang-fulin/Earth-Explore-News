@@ -5,7 +5,7 @@ from newsplease import NewsPlease
 from openai import OpenAI
 from zoneinfo import ZoneInfo
 import re
-import datetime
+from datetime import datetime
 import os
 import time
 import subprocess
