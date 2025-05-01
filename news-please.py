@@ -3,6 +3,7 @@ from scraper import get_news_links
 from scraper import fetch_htmls
 from newsplease import NewsPlease
 from openai import OpenAI
+from zoneinfo import ZoneInfo
 import re
 import datetime
 import os
@@ -57,7 +58,7 @@ def main():
                 try:
                     data = json.loads(json_string)
 
-                    current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+                    current_time = datetime.now(ZoneInfo("Asia/Shanghai")).strftime("%Y-%m-%d_%H-%M-%S")
                     
                     file_name = f"{name + '_' + current_time}.json"
                     
