@@ -31,9 +31,12 @@ def main():
             
             if news_htmls:
                 for html in list(news_htmls):
-                    article = NewsPlease.from_html(html)
-                    if article.title:
-                        news_titles += article.title + '|'
+                    try:
+                        article = NewsPlease.from_html(html)
+                        if article and article.title:
+                            news_titles += article.title + '|'
+                    except Exception as e:
+                        print(f"Error parsing article: {e}")
 
             else:
                 print(f"No specific scraping rule for {name}.")
