@@ -5,16 +5,16 @@ const supabaseKey = process.env.supabaseKey;
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-export async function delete_table(tableName) {
+export async function delete_data_by_date(date, tableName="today-news") {
     try {
-      const { error } = await supabase.from(tableName).delete();
+      const { error } = await supabase.from(tableName).delete().gte('time', date)
 
       if (error) {
         console.error(`Failed to delete data from "${tableName}"`);
         throw new Error('Failed to delete data from table')
       }
   
-      console.log(`All data from table "${tableName}" has been successfully deleted.`);
+      console.log(`All data newer "${date}" than  has been deleted`);
       return true;
     } catch (error) {
         console.error(`Failed to delete data from "${tableName}"`);
@@ -50,18 +50,3 @@ export async function insert_table(item, tableName) {
         console.error("Failed to insert data: insert_table");
     }
 }    
-
-
-    //   const { data, error } = await supabase
-//     .from('news')
-//     .select('*')
-//     .gte('time', currentDateISOString);
-
-//   if (error) {
-//     console.error('Error fetching news:', error);
-//     return [];
-//   }
-
-//   console.log(data);
-//   return data || [];
-// }

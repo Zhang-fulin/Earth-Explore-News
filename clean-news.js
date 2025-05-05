@@ -1,4 +1,4 @@
-import { delete_table } from "./supabase_api/supabase_api.js";
+import { delete_data_by_date } from "./supabase_api/supabase_api.js";
 import { get_data_by_date } from "./supabase_api/supabase_api.js";
 import { insert_table } from "./supabase_api/supabase_api.js";
 import { get_utc_now_str } from "./utils_time/utc_time.js";
@@ -29,7 +29,7 @@ async function readStdinJson() {
 }
 
 async function delete_today_news() {
-  await delete_table('today-news');
+  await delete_data_by_date(get_utc_now_str('today'));
 }
 
 async function insert_news(news_data) {
