@@ -11,7 +11,11 @@ export function get_utc_now_str(fmt = "iso") {
         return `${now.getUTCFullYear()}-${pad(now.getUTCMonth() + 1)}-${pad(now.getUTCDate())}_` +
                 `${pad(now.getUTCHours())}-${pad(now.getUTCMinutes())}-${pad(now.getUTCSeconds())}`;
     } else if (fmt === "today"){
-        const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const startOfDay = new Date(Date.UTC(
+            now.getUTCFullYear(),
+            now.getUTCMonth(),
+            now.getUTCDate()
+        ));
         return startOfDay.toISOString();
     } else {
         throw new Error("Unsupported format. Use 'iso' or 'file'.");
@@ -31,3 +35,4 @@ export function extractTimeFromFilename(filename) {
     const match = filename.match(/_(\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2})\.json/);
     return match ? match[1] : null;
 }
+

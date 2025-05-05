@@ -60,6 +60,7 @@ def main():
                         encoding='utf-8'
                     )
 
+                    print(result.stderr, result.stdout)
                 except json.JSONDecodeError:
                     print("提取的内容不是有效的 JSON 格式")
             else:
@@ -67,5 +68,5 @@ def main():
 
 if __name__ == "__main__":
     while True:
-        main()
+        # main()
         time.sleep(2 * 60 * 60)
