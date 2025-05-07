@@ -14,7 +14,7 @@ export async function delete_data_by_date(date, tableName="today-news") {
         throw new Error('Failed to delete data from table')
       }
   
-      console.log(`All data newer "${date}" than  has been deleted`);
+      console.log(`✅删除成功 All data newer "${date}" than  has been deleted`);
       return true;
     } catch (error) {
         console.error(`Failed to delete data from "${tableName}"`);

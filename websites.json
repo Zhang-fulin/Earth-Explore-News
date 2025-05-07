@@ -2,16 +2,11 @@
     {
       "name": "BBC",
       "url": "https://www.bbc.com/news",
-      "enable": false
+      "enable": true
     },
     {
       "name": "CCTV",
       "url": "https://news.cctv.com/world/",
-      "enable": true
-    },
-    {
-      "name": "China Daily",
-      "url": "https://news.cctv.com/world/?spm=C94212.PBZrLs0D62ld.EqC6QDfEmmsv.3",
       "enable": false
     },
     {

@@ -42,8 +42,6 @@ async function insert_news(news_data) {
       city: item.city || '未知',
       time: news_data.news_time
     };
-
-    console.log(newsData.content)
     await insert_table(newsData, 'news');
   }
 }

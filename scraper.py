@@ -3,9 +3,30 @@ from datetime import datetime
 
 # BBC 爬虫函数
 def scrape_bbc(url):
-    links = set()
-    # 添加BBC的爬取逻辑
-    return links
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+
+        page = browser.new_page()
+
+        page.goto(url, timeout=60000)
+
+              # 等待网络空闲，确保页面加载完成
+        # page.wait_for_load_state('networkidle')
+
+        # 抓取所有新闻链接：通常是以 https://www.bbc.com/news 开头
+        anchors = page.query_selector_all('a[href^="/news"]')
+
+        links = set()
+        for a in anchors:
+            href = a.get_attribute('href')
+            if href:
+                if href.startswith("/news/articles"):
+                    links.add("https://www.bbc.com" + href)
+                elif href.startswith("https://www.bbc.com/news"):
+                    links.add(href)
+
+        browser.close()
+        return list(links)
 
 def scrape_cctv(url):
     today_date = datetime.now().strftime('%Y/%m/%d')
@@ -15,7 +36,7 @@ def scrape_cctv(url):
 
         page = browser.new_page()
 
-        page.goto('https://news.cctv.com/world/', timeout=60000)
+        page.goto(url, timeout=60000)
         
         page.wait_for_selector('a[target="_blank"]', timeout=60000)
 
@@ -27,6 +48,7 @@ def scrape_cctv(url):
 
         unique_links = list(set(filtered_links))
 
+        browser.close()
         return unique_links
     
 # China Daily 爬虫函数
@@ -177,7 +199,8 @@ def scrape_asahi(url):
 # 主函数用于根据网站名来选择爬虫函数
 def get_news_links(website_name, url):
     if website_name == "BBC":
-        return scrape_bbc(url)
+        links = scrape_bbc(url)
+        return links
     elif website_name == "CCTV":
         return scrape_cctv(url)
     elif website_name == "China Daily":
@@ -245,5 +268,8 @@ def fetch_htmls(urls):
             except Exception as e:
                 print(f"Error fetching {url}: {e}")
                 html_list.append(None)
-        browser.close()
+        browser.close() 
     return html_list
+
+
+
