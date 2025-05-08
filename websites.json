@@ -7,7 +7,7 @@
     {
       "name": "CCTV",
       "url": "https://news.cctv.com/world/",
-      "enable": false
+      "enable": true
     },
     {
       "name": "Reuters",
