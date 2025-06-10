@@ -2,7 +2,7 @@
     {
       "name": "BBC",
       "url": "https://www.bbc.com/news",
-      "enable": true
+      "enable": false
     },
     {
       "name": "CCTV",
