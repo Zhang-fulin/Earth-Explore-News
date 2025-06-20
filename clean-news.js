@@ -73,8 +73,6 @@ async function insert_today_news(params) {
 async function main() {
   const news_data = await readStdinJson();
   await insert_news(news_data);
-  await delete_today_news();
-  await insert_today_news();
 }
 
 main();

@@ -50,3 +50,25 @@ export async function insert_table(item, tableName) {
         console.error("Failed to insert data: insert_table");
     }
 }    
+
+export async function urlExists(url, tableName) {
+  try {
+    const { data, error } = await supabase
+      .from(tableName)
+      .select('url')
+      .eq('url', url)
+      .limit(1);
+
+    if (error) {
+      console.error('查询 URL 出错:', error);
+      return false;
+    }
+
+    // ✅ 如果查到了数据，返回 true；否则 false
+    return data && data.length > 0;
+
+  } catch (err) {
+    console.error('异常:', err);
+    return false;
+  }
+}
