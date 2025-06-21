@@ -5,6 +5,8 @@ from deepseek_api.deepseek_api import news_coordinates_lon_lat
 from utils_time.utc_time import get_utc_now_str
 import json
 import subprocess
+import os
+import subprocess
 
 
 def scrape_cctv_links(url):
@@ -120,7 +122,10 @@ def get_cctv_news(website_name, url):
 
         json_data = json.dumps(news_data)
 
-        result = subprocess.run(['node', 'insert-news.js'], input=json_data,
+        current_dir = os.path.dirname(__file__)
+        script_path = os.path.join(current_dir, 'cctv-news.js')
+
+        result = subprocess.run(['node', script_path], input=json_data,
             text=True,
             capture_output=True,
             encoding='utf-8'

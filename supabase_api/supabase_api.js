@@ -5,39 +5,6 @@ const supabaseKey = process.env.supabaseKey;
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-export async function delete_data_by_date(date, tableName="today-news") {
-    try {
-      const { error } = await supabase.from(tableName).delete().gte('time', date)
-
-      if (error) {
-        console.error(`Failed to delete data from "${tableName}"`);
-        throw new Error('Failed to delete data from table')
-      }
-  
-      console.log(`✅删除成功 All data newer "${date}" than  has been deleted`);
-      return true;
-    } catch (error) {
-        console.error(`Failed to delete data from "${tableName}"`);
-      return false;
-    }
-}
-
-export async function get_data_by_date(date, tableName='news') {
-    try {
-
-      const { data, error } = await supabase.from(tableName).select('*').gte('time', date);
-
-      if (error) {
-        console.error("Failed to get data: get_data_by_data");
-        throw new Error("Failed to get data: get_data_by_data")
-      }
-      return data;
-    } catch (error) {
-        console.error("Failed to get data: get_data_by_data");
-      return [];
-    }
-}
-
 export async function insert_table(item, tableName) {
     try {
         const { error } = await supabase.from(tableName).insert([item]);
@@ -63,8 +30,7 @@ export async function urlExists(url, tableName) {
       console.error('查询 URL 出错:', error);
       return false;
     }
-
-    // ✅ 如果查到了数据，返回 true；否则 false
+    
     return data && data.length > 0;
 
   } catch (err) {

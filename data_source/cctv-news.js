@@ -1,4 +1,4 @@
-import { insert_table, urlExists } from "./supabase_api/supabase_api.js";
+import { insert_table, urlExists } from "../supabase_api/supabase_api.js";
 
 async function readStdinJson() {
   return new Promise((resolve, reject) => {
@@ -26,14 +26,12 @@ async function readStdinJson() {
 
 async function insert_news(news_data) {
     if (!await urlExists(news_data.url, 'cctv-news')) {
-        console.log(1111);
         await insert_table(news_data, 'cctv-news');
     } 
 }
 
 async function main() {
   const news_data = await readStdinJson();
-  console.log(news_data);
   await insert_news(news_data);
 }
 
