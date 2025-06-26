@@ -83,6 +83,10 @@ def clean_content_area(content_area):
         return ""
     content_area.attrs = {}
     for tag in content_area.find_all(True):
+        if tag.name == "p" and tag.find(id="myFlash"):
+            tag.decompose()
+            continue
+        
         if tag.name == "img":
             tag.attrs = {"src": tag.get("src")} if tag.has_attr("src") else {}
         else:
