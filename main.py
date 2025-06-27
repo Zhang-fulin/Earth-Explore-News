@@ -22,4 +22,4 @@ def main():
 if __name__ == "__main__":
     while True:
         main()
-        time.sleep(1 * 60 * 60)
+        time.sleep(1 * 20 * 60)
