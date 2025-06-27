@@ -83,7 +83,8 @@ def clean_content_area(content_area):
         return ""
     content_area.attrs = {}
     for tag in content_area.find_all(True):
-        if tag.name == "p" and tag.find(id="myFlash"):
+        
+        if tag.name == "p" and tag.find(attrs={"id": lambda x: x and "flash" in x.lower()}):
             tag.decompose()
             continue
         
