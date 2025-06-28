@@ -38,3 +38,24 @@ export async function urlExists(url, tableName) {
     return false;
   }
 }
+
+export async function titleExists(title, tableName) {
+  try {
+    const { data, error } = await supabase
+      .from(tableName)
+      .select('title')
+      .eq('title', title)
+      .limit(1);
+
+    if (error) {
+      console.error('查询 URL 出错:', error);
+      return false;
+    }
+    
+    return data && data.length > 0;
+
+  } catch (err) {
+    console.error('异常:', err);
+    return false;
+  }
+}
