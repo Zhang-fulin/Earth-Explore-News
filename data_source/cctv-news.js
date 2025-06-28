@@ -25,7 +25,7 @@ async function readStdinJson() {
 }
 
 async function insert_news(news_data) {
-    if (!await titleExists(news_data.url, 'cctv-news')) {
+    if (!await titleExists(news_data.title, 'cctv-news')) {
         await insert_table(news_data, 'cctv-news');
     } 
 }
