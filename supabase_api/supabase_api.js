@@ -11,7 +11,7 @@ export async function insert_table(item, tableName) {
         if (error) {
             console.error('❌插入失败', error);
         } else {
-            console.log(`✅插入成功:${item.content}`);
+            console.log(`✅插入成功:${item.title}`);
         }
     } catch (error) {
         console.error("Failed to insert data: insert_table");
