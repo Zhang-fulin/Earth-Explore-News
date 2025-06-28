@@ -1,4 +1,4 @@
-import { insert_table, urlExists } from "../supabase_api/supabase_api.js";
+import { insert_table } from "../supabase_api/supabase_api.js";
 
 async function readStdinJson() {
   return new Promise((resolve, reject) => {
