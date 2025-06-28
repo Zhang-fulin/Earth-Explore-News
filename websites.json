@@ -5,6 +5,11 @@
       "enable": false
     },
     {
+      "name": "CCTV_C",
+      "url": "https://news.cctv.com/china/",
+      "enable": true
+    },
+    {
       "name": "CCTV",
       "url": "https://news.cctv.com/world/",
       "enable": true
