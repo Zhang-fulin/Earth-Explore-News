@@ -40,7 +40,7 @@ def scrape_cctv_c_html(url):
         try:
             page.goto(url, timeout=60000)
             page.wait_for_load_state('networkidle')
-            page.wait_for_selector('.content_area') # 等待 JS 加载完成
+            page.wait_for_selector('.content_area', timeout=60000) # 等待 JS 加载完成
             html = page.content()  # 获取 HTML 内容
         except Exception as e:
             print(f"Error scraping {url}: {e}")
@@ -48,7 +48,8 @@ def scrape_cctv_c_html(url):
     return html
 
 def process_cctv_c_htmls_with_title(html):
-   
+    if not html:
+        return None
     title_text = None
     try:
         soup = BeautifulSoup(html, 'html.parser')
@@ -59,6 +60,8 @@ def process_cctv_c_htmls_with_title(html):
     return title_text
 
 def process_cctv_c_htmls_with_info(html):
+    if not html:
+        return None
     info_text = None
     try:
         soup = BeautifulSoup(html, 'html.parser')
@@ -69,6 +72,8 @@ def process_cctv_c_htmls_with_info(html):
     return info_text
 
 def process_cctv_c_htmls_with_content(html):
+    if not html:
+        return None
     content_text = None
 
     try:
